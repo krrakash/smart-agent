@@ -2,6 +2,10 @@
 
 #### Here's brief summary of the framework. For more detailed documentation of the Behaviour, Handler & AutonomousAgent classes. please go through respective files in `behaviour.py, handler.py, agent.py`. There I've have added doc comments, which can be used to generate pydocs as well
 
+### Note: 
+1. **Make sure you have deployed the factory contract responsible for deploying new agents using the SmartContractFactoryDeployer repo [https://github.com/krrakash/SmartAgentFactoryDeployer]**
+2. **Make sure different private keys are provided for each new instance of agent, otherwise it won't start a new agent, instead it will connect to previously created agent**
+
 ## Overview
 
 The Autonomous Agent Framework provides a modular approach for creating, deploying, and managing blockchain-based

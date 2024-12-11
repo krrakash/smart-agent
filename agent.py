@@ -65,7 +65,10 @@ class AutonomousAgent:
         """
         while True:
             for behaviour in self.behaviours:
-                await behaviour.run()
+                try:
+                    await behaviour.run()
+                except Exception as e:
+                    print("Error in executing behaviour", e)
             await asyncio.sleep(1)
 
     def run(self):
@@ -83,4 +86,7 @@ class AutonomousAgent:
             sender (str): The address or identifier of the sender.
         """
         for handler in self.handlers:
-            handler.handle_message(message, sender)
+            try:
+                handler.handle_message(message, sender)
+            except Exception as e:
+                print(f"Error in handling message {message} from sender {sender}", e)

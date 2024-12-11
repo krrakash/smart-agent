@@ -1,5 +1,7 @@
 # Smart Decentralised Agent Framework Documentation
 
+[Sample Agent](https://github.com/krrakash/smart-agent/blob/main/sample.png)
+
 #### Here's brief summary of the framework. For more detailed documentation of the Behaviour, Handler & AutonomousAgent classes. please go through respective files in [behaviour.py](https://github.com/krrakash/smart-agent/blob/main/behaviours/behaviour.py), [handler.py](https://github.com/krrakash/smart-agent/blob/main/handlers/handler.py), [agent.py](https://github.com/krrakash/smart-agent/blob/main/agent.py). There I've have added doc comments, which can be used to generate pydocs as well
 
 ### Note: 

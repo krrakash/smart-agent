@@ -3,8 +3,8 @@
 #### Here's brief summary of the framework. For more detailed documentation of the Behaviour, Handler & AutonomousAgent classes. please go through respective files in [behaviour.py](https://github.com/krrakash/smart-agent/blob/main/behaviours/behaviour.py), [handler.py](https://github.com/krrakash/smart-agent/blob/main/handlers/handler.py), [agent.py](https://github.com/krrakash/smart-agent/blob/main/agent.py). There I've have added doc comments, which can be used to generate pydocs as well
 
 ### Note: 
-1. **Make sure you have deployed the factory contract responsible for deploying new agents using the [SmartContractFactoryDeployer](https://github.com/krrakash/SmartAgentFactoryDeployer)**
-2. **Make sure different private keys are provided for each new instance of agent, otherwise it won't start a new agent, instead it will connect to previously created agent**
+1. **Make sure to use factory_address = 0xF2F1473545Cc0B63E8b5B6031E6e37F444291248 or you have deployed the factory contract responsible for deploying new agents using the [SmartContractFactoryDeployer](https://github.com/krrakash/SmartAgentFactoryDeployer)**
+2. **Make sure different private keys are provided for each new instance of agent, and those accounts have enough eth and dai**
 
 ## Overview
 
@@ -115,6 +115,8 @@ class CheckBalanceBehaviour(Behaviour):
 
 ## 4. **Running the Project using Python**
 
+deplyer_factory_address = 0xF2F1473545Cc0B63E8b5B6031E6e37F444291248
+The agents can exceed limits on my free tenderly account, if above does not work, or you want to deploy your own factory, refer to [SmartContractFactoryDeployer](https://github.com/krrakash/SmartAgentFactoryDeployer)
 ```bash
 pip install -r requirements.txt
 

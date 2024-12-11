@@ -1,9 +1,9 @@
 # Smart Decentralised Agent Framework Documentation
 
-#### Here's brief summary of the framework. For more detailed documentation of the Behaviour, Handler & AutonomousAgent classes. please go through respective files in behaviour.py[https://github.com/krrakash/smart-agent/blob/main/behaviours/behaviour.py], handler.py[https://github.com/krrakash/smart-agent/blob/main/handlers/handler.py], agent.py[https://github.com/krrakash/smart-agent/blob/main/agent.py]. There I've have added doc comments, which can be used to generate pydocs as well
+#### Here's brief summary of the framework. For more detailed documentation of the Behaviour, Handler & AutonomousAgent classes. please go through respective files in [behaviour.py](https://github.com/krrakash/smart-agent/blob/main/behaviours/behaviour.py), [handler.py](https://github.com/krrakash/smart-agent/blob/main/handlers/handler.py), [agent.py](https://github.com/krrakash/smart-agent/blob/main/agent.py). There I've have added doc comments, which can be used to generate pydocs as well
 
 ### Note: 
-1. **Make sure you have deployed the factory contract responsible for deploying new agents using the SmartContractFactoryDeployer repo [https://github.com/krrakash/SmartAgentFactoryDeployer]**
+1. **Make sure you have deployed the factory contract responsible for deploying new agents using the [SmartContractFactoryDeployer](https://github.com/krrakash/SmartAgentFactoryDeployer)**
 2. **Make sure different private keys are provided for each new instance of agent, otherwise it won't start a new agent, instead it will connect to previously created agent**
 
 ## Overview

@@ -1,5 +1,6 @@
 from abc import abstractmethod
 from agent import AutonomousAgent
+from message import Message
 
 
 class Handler:
@@ -24,7 +25,7 @@ class Handler:
         self.agent = agent
 
     @abstractmethod
-    def handle_message(self, sender: str, message: str) -> bool:
+    def handle_message(self, message: Message) -> bool:
         """
         Processes a message sent to the agent.
 
@@ -32,8 +33,7 @@ class Handler:
         handling incoming messages from other agents or systems.
 
         Args:
-            sender (str): The identifier (e.g., address or name) of the message sender.
-            message (str): The content of the message being handled.
+            message (Message): The content of the message being handled.
 
         Returns:
             bool: True if the message was handled successfully, False otherwise.

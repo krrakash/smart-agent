@@ -8,7 +8,7 @@ class IncomingMessageBehaviour(Behaviour):
         return datetime.datetime.now() - self.last_ran_at >= datetime.timedelta(seconds=1)
 
     async def logic(self):
-        message = self.agent.interactor.get_inbox()
-        if message:
-            await self.agent.process_message(message[1], message[0])
-            self.agent.interactor.ack_msg(0)
+        message = self.agent.get_message_to_process()
+        while message:
+            await self.agent.process_message(message)
+            message = self.agent.get_message_to_process()

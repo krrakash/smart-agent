@@ -1,8 +1,6 @@
 # Smart Decentralized Agent Framework Documentation
 
-<video width="640" height="360" controls>
-  <source src="https://github.com/krrakash/smart-agent/blob/main/Project_Running.mp4" type="video/mp4">
-</video>
+![Sample Agent](https://github.com/krrakash/smart-agent/blob/main/Project_Running.gif)
 
 ## Overview
 

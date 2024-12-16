@@ -1,49 +1,65 @@
 import asyncio
+
 from web3 import Web3
 
-from helpers.abi import agent_abi
 from helpers.sa_contract_helper import SAContractHelper
-from helpers.sa_factory_helper import SAFactoryHelper
+from helpers.utils import get_server_instance
 
 
 class AutonomousAgent:
     """
     Represents an autonomous agent capable of deploying itself on a blockchain, interacting with other agents,
-    and executing behaviors and message handlers.
+    executing behaviors, and handling incoming messages.
 
     Attributes:
-        factory_helper (SAFactoryHelper): Helper for deploying and interacting with the agent factory contract.
-        address (str): The blockchain address of the deployed agent.
+        server (BaseServer): The server instance for handling communication with other agents.
         web3 (Web3): An instance of Web3 for interacting with the blockchain.
-        interactor (SAContractHelper): Helper for interacting with the agent's smart contract.
-        other_agents (list): A list of other agents this agent interacts with.
-        handlers (list): A list of registered message handlers for processing incoming messages.
-        behaviours (list): A list of registered behaviors for periodic execution.
+        interactor (SAContractHelper): Helper for interacting with the agent's smart contract on the blockchain.
+        handlers (list): A list of registered message handlers to process incoming messages.
+        behaviours (list): A list of registered behaviors for periodic asynchronous execution.
     """
 
-    def __init__(self, provider_url: str, private_key: str, factory_address: str):
+    def __init__(self, provider_url: str, private_key: str):
         """
-        Initializes the AutonomousAgent instance by deploying it on the blockchain and setting up necessary components.
+        Initializes the AutonomousAgent instance by setting up the server, blockchain connection, and contract interactor.
 
         Args:
             provider_url (str): The URL of the blockchain provider (e.g., Infura, Alchemy).
-            private_key (str): The private key of the agent for signing transactions.
-            factory_address (str): The address of the smart contract factory used to deploy the agent.
+            private_key (str): The private key of the agent's Ethereum account for signing transactions.
         """
-        self.factory_helper = SAFactoryHelper(provider_url, factory_address, private_key)
-        self.address = self.factory_helper.deploy_new_agent()
+        self.server = get_server_instance()
         self.web3 = Web3(Web3.HTTPProvider(provider_url))
-        self.interactor = SAContractHelper(provider_url, self.address, agent_abi, private_key)
-        self.other_agents = []
+        self.interactor = SAContractHelper(provider_url, private_key)
         self.handlers = []
         self.behaviours = []
+
+    def get_message_to_process(self):
+        """
+        Retrieves the next message from the server's received messages queue, if available.
+
+        Returns:
+            Message: The next message to process, or None if the queue is empty.
+        """
+        if self.server.received_messages.empty():
+            return None
+        else:
+            return self.server.received_messages.get()
+
+    def print(self, message):
+        """
+        Logs a message with the server's host and port as a prefix.
+
+        Args:
+            message (str): The message to be logged.
+        """
+        print(f"{self.server.host}:{self.server.port}: {message}")
 
     def register_behaviour(self, behaviour):
         """
         Registers a behavior for periodic execution.
 
         Args:
-            behaviour (Behaviour): The behavior instance to be registered.
+            behaviour (Behaviour): The behavior instance to be registered for execution.
         """
         self.behaviours.append(behaviour)
 
@@ -52,16 +68,16 @@ class AutonomousAgent:
         Registers a message handler for processing incoming messages.
 
         Args:
-            handler (Handler): The handler instance to be registered.
+            handler (Handler): The handler instance to be registered for message processing.
         """
         self.handlers.append(handler)
 
     async def run_behaviours(self):
         """
-        Executes all registered behaviors in a periodic loop.
+        Executes all registered behaviors in an infinite asynchronous loop.
 
-        Each behavior is run asynchronously, and the loop waits for 1 second
-        between executions.
+        Each behavior's `run` method is executed asynchronously. The loop pauses for 1 second
+        between successive executions of behaviors.
         """
         while True:
             for behaviour in self.behaviours:
@@ -70,17 +86,22 @@ class AutonomousAgent:
 
     def run(self):
         """
-        Starts the agent by running all registered behaviors in an asynchronous event loop.
-        """
-        asyncio.run(self.run_behaviours())
+        Starts the agent by running the server and all registered behaviors within an asynchronous event loop.
 
-    async def process_message(self, message: str, sender: str):
+        This method orchestrates both communication and periodic behavior execution for the agent.
+        """
+        asyncio.gather(self.server.run(), self.run_behaviours())
+        asyncio.get_event_loop().run_forever()
+
+    async def process_message(self, message: str):
         """
         Processes an incoming message using all registered handlers.
 
+        Each registered handler's `handle_message` method is invoked with the incoming message.
+
         Args:
-            message (str): The content of the incoming message.
-            sender (str): The address or identifier of the sender.
+            message (str): The content of the incoming message to be processed.
         """
         for handler in self.handlers:
-            handler.handle_message(message, sender)
+            handler.handle_message(message)
+

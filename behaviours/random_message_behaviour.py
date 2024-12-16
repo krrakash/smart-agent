@@ -1,12 +1,19 @@
 import datetime
 import random
 
+from agent import AutonomousAgent
 from behaviours.behaviour import Behaviour
+from handlers.handler import Message
 
 word_alphabet = ["hello", "sun", "world", "space", "moon", "crypto", "sky", "ocean", "universe", "human"]
 
 
 class RandomMessageBehaviour(Behaviour):
+
+    def __init__(self, agent: AutonomousAgent):
+        super().__init__(agent)
+        self.message_id = 1
+
     def guard(self) -> bool:
         return datetime.datetime.now() - self.last_ran_at >= datetime.timedelta(seconds=2)
 
@@ -14,9 +21,10 @@ class RandomMessageBehaviour(Behaviour):
         word1 = random.choice(word_alphabet)
         word2 = random.choice(word_alphabet)
         message = f"{word1} {word2}"
-        print(f"Generated message: {message}")
-        if "hello" not in message and "crypto" not in message:
-            return
-        for address in self.agent.other_agents:
-            tx_hash = self.agent.interactor.send_message(self.agent.address, address, message)
-            print("sent message to agent ", address, tx_hash)
+        await self.agent.server.send_to_outbox(
+            Message(
+                message=message,
+                id=self.message_id,
+            )
+        )
+        self.message_id += 1

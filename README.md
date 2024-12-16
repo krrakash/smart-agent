@@ -23,17 +23,22 @@ The Smart Decentralized Agent Framework provides a modular structure for creatin
 ## 1. **Running the Project using Python**
 
 The .env file has two section of parameters one for each agent. Run the ```python main.py``` in two different terminal for two different instances of agents.
-### Generating venv
+### For Linux/Mac
 ```bash
 python -m venv <venv_name>
-source <venv>/bin/activate
-```
-
-### Running the project
-```bash
+source <venv_name>/bin/activate
 pip install -r requirements.txt
 python main.py 
 ```
+
+### For Windows Powershell
+```bash
+python -m venv <venv_name>
+.\<venv_name>\Scripts\activate
+pip install -r requirements.txt
+python main.py 
+```
+
 
 ## 2. **Running Project using Docker**
 

@@ -21,7 +21,7 @@ class SocketServerImpl(BaseServer):
 
     async def handle_connection(self, reader, writer):
         """Handles incoming connections."""
-        self.print("New connection established")
+        self.print("Connection established to the outbox agent")
         # self.reader = reader
         # self.writer = writer
         asyncio.create_task(self.receive_message(reader))
@@ -37,7 +37,7 @@ class SocketServerImpl(BaseServer):
                     return
                 except Exception as e:
                     self.print(
-                        f"Could not connect to peer at {self.peer_host}:{self.peer_port}, Retrying after 5 seconds...")
+                        f"Could not connect to outbox agent at {self.peer_host}:{self.peer_port}, Make sure outbox agent is up and running. Retrying after 5 seconds...")
                     await asyncio.sleep(5)
 
     async def receive_message(self, reader):
@@ -58,7 +58,7 @@ class SocketServerImpl(BaseServer):
     async def send_to_outbox(self, message: Message):
         message_str = json.dumps(message.__dict__)
         self.sent_messages.put(message_str)
-        self.print(f"Saved message to outbox: {message_str}")
+        self.print(f"Saved message to outbox queue: {message_str}")
 
     async def flush_outbox(self):
         """Continuously sends messages to the peer."""
@@ -70,7 +70,7 @@ class SocketServerImpl(BaseServer):
                 message = self.sent_messages.get()
                 self.writer.write((message + "\n").encode('utf-8'))
                 await self.writer.drain()
-                self.print(f"Sent message to agent from outbox: {message}")
+                self.print(f"Sent message to agent from outbox queue: {message}")
         except Exception as e:
             self.print(f"Error sending message: {e}")
             self.is_connected = False

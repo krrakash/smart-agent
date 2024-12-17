@@ -44,7 +44,7 @@ class HTTPServerImpl(BaseServer):
     async def send_to_outbox(self, message: Message):
         message_str = json.dumps(message.__dict__)
         self.sent_messages.put(message_str)
-        self.print(f"Saved message to outbox: {message_str}")
+        self.print(f"Saved message to outbox queue: {message_str}")
 
     async def flush_outbox(self):
         """Sends all messages in the outbox to the peer."""
@@ -55,7 +55,7 @@ class HTTPServerImpl(BaseServer):
                     url = f"http://{self.peer_host}:{self.peer_port}"
                     response = requests.post(url, json=json.loads(message))
                     if response.status_code == 200:
-                        self.print(f"Sent message to peer: {message}")
+                        self.print(f"Sent message to agent from outbox queue: {message}")
                     else:
                         self.print(f"Failed to send message: {message.__dict__}, error code: {response.status_code}")
         except Exception as e:

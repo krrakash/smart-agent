@@ -59,7 +59,8 @@ class SAContractHelper:
             tx_hash = self.web3.eth.send_raw_transaction(signed_tx.raw_transaction)
             return self.web3.to_hex(tx_hash)
         except Exception as e:
-            print("Error during ERC20 token transfer", e)
+            print("Error in ERC20 token transfer, Check your eth & dai balance and if your tenderly "
+                  "limit is not exhausted\n", e)
             return None
 
     async def check_balance(self) -> float:

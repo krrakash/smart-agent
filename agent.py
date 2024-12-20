@@ -1,5 +1,5 @@
 import asyncio
-import datetime
+from datetime import datetime, timezone
 
 from web3 import Web3
 
@@ -53,9 +53,8 @@ class AutonomousAgent:
         Args:
             message (str): The message to be logged.
         """
-        current_time = datetime.datetime.now()
-        timestamp = f"Date: {current_time.date()} Time: {current_time.time()}"
-        print(f"{timestamp}: {self.server.host}:{self.server.port}: {message}")
+        current_utc_time = datetime.now(timezone.utc)
+        print(f"{self.server.host}:{self.server.port} [{current_utc_time.isoformat()}]: {message}")
 
     def register_behaviour(self, behaviour):
         """

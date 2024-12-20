@@ -1,8 +1,8 @@
-import datetime
 import queue
 from abc import abstractmethod
 
 from message import Message
+from datetime import datetime, timezone
 
 
 class BaseServer:
@@ -42,14 +42,13 @@ class BaseServer:
 
     def print(self, message):
         """
-        Prints a message with the server's host and port as a prefix.
+        Logs a message with the server's host and port as a prefix.
 
         Args:
-            message (str): The message to print.
+            message (str): The message to be logged.
         """
-        current_time = datetime.datetime.now()
-        timestamp = f"Date: {current_time.date()} Time: {current_time.time()}"
-        print(f"{timestamp}: {self.host}:{self.port}: {message}")
+        current_utc_time = datetime.now(timezone.utc)
+        print(f"{self.host}:{self.port} [{current_utc_time.isoformat()}]: {message}")
 
     @abstractmethod
     async def send_to_outbox(self, message: Message):

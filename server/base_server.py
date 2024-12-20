@@ -47,8 +47,10 @@ class BaseServer:
         Args:
             message (str): The message to be logged.
         """
-        current_utc_time = datetime.now(timezone.utc)
-        print(f"{self.host}:{self.port} [{current_utc_time.isoformat()}]: {message}")
+        utc_time = datetime.now(timezone.utc)
+        local_time = utc_time.astimezone()
+        local_iso_time = local_time.isoformat().split('.')[0]
+        print(f"{self.host}:{self.port} [{local_iso_time}]: {message}")
 
     @abstractmethod
     async def send_to_outbox(self, message: Message):

@@ -53,8 +53,10 @@ class AutonomousAgent:
         Args:
             message (str): The message to be logged.
         """
-        current_utc_time = datetime.now(timezone.utc)
-        print(f"{self.server.host}:{self.server.port} [{current_utc_time.isoformat()}]: {message}")
+        utc_time = datetime.now(timezone.utc)
+        local_time = utc_time.astimezone()
+        local_iso_time = local_time.isoformat().split('.')[0]
+        print(f"{self.server.host}:{self.server.port} [{local_iso_time}]: {message}")
 
     def register_behaviour(self, behaviour):
         """
@@ -84,7 +86,7 @@ class AutonomousAgent:
         while True:
             for behaviour in self.behaviours:
                 await behaviour.run()
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.1)
 
     def run(self):
         """

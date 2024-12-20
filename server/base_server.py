@@ -47,6 +47,7 @@ class BaseServer:
         Args:
             message (str): The message to be logged.
         """
+
         utc_time = datetime.now(timezone.utc)
         local_time = utc_time.astimezone()
         local_iso_time = local_time.isoformat().split('.')[0]

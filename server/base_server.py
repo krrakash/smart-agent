@@ -1,3 +1,4 @@
+import datetime
 import queue
 from abc import abstractmethod
 
@@ -46,7 +47,9 @@ class BaseServer:
         Args:
             message (str): The message to print.
         """
-        print(f"{self.host}:{self.port}: {message}")
+        current_time = datetime.datetime.now()
+        timestamp = f"Date: {current_time.date()} Time: {current_time.time()}"
+        print(f"{timestamp}: {self.host}:{self.port}: {message}")
 
     @abstractmethod
     async def send_to_outbox(self, message: Message):

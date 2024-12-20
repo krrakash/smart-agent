@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 
 from web3 import Web3
 
@@ -52,7 +53,9 @@ class AutonomousAgent:
         Args:
             message (str): The message to be logged.
         """
-        print(f"{self.server.host}:{self.server.port}: {message}")
+        current_time = datetime.datetime.now()
+        timestamp = f"Date: {current_time.date()} Time: {current_time.time()}"
+        print(f"{timestamp}: {self.host}:{self.port}: {message}")
 
     def register_behaviour(self, behaviour):
         """

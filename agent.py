@@ -55,7 +55,7 @@ class AutonomousAgent:
         """
         current_time = datetime.datetime.now()
         timestamp = f"Date: {current_time.date()} Time: {current_time.time()}"
-        print(f"{timestamp}: {self.host}:{self.port}: {message}")
+        print(f"{timestamp}: {self.server.host}:{self.server.port}: {message}")
 
     def register_behaviour(self, behaviour):
         """
